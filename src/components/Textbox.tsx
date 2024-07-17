@@ -6,7 +6,7 @@ interface TextboxProps {
     onUpdate: {(newValue: string): void} | null;
 }
 
-export default function Dropdown(props: TextboxProps): React.ReactElement {
+export default function Textbox(props: TextboxProps): React.ReactElement {
     const [input, setInput] = useState<string>();
 
     function onChange(event: any): void {
