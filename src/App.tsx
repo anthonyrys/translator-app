@@ -10,13 +10,15 @@ import { AppStyled, ContainerStyled } from './styles/AppStyles';
 export default function App(): React.ReactElement {
     const [languages, setLanguages] = useState<{[language: string]: string}>({});
 
-    const [source, setSource] = useState<string | null>('en');
-    const [target, setTarget] = useState<string | null>('es');
+    const [source, setSource] = useState<string | null>('English');
+    const [target, setTarget] = useState<string | null>('Spanish');
 
-    const [input, setInput] = useState<string>();
-    const [translation, setTranslation] = useState<string>();
+    const [input, setInput] = useState<string>('The quick brown fox jumps over the lazy dog');
+    const [translation, setTranslation] = useState<string>('');
 
-    function translate(): void {}
+    function translate(): void {
+        console.log(`Translate "${input}" in ${source} to ${target}`);
+    }
 
     function load(): () => void {
         GetLanguages()
@@ -25,16 +27,18 @@ export default function App(): React.ReactElement {
             setLanguages(result)
         });
 
-        const timeout: NodeJS.Timeout = setTimeout(() => console.log(input), 500);
+        const timeout: NodeJS.Timeout = setTimeout(translate, 500);
         return () => clearTimeout(timeout);
     }
 
     function updateSource(newSource: string | null): void {
         setSource(newSource);
+        translate();
     }
 
     function updateTarget(newTarget: string | null): void {
         setTarget(newTarget);
+        translate();
     }
 
     function updateText(newInput: string): void {
@@ -46,13 +50,13 @@ export default function App(): React.ReactElement {
     return (
         <AppStyled>
             <ContainerStyled>
-                <Dropdown label='Source' default='English' languages={ languages }  onUpdate={ updateSource } />
-                <Textbox onUpdate={ updateText } />
+                <Dropdown label='Source' text={ source } languages={ languages }  onUpdate={ updateSource } />
+                <Textbox text={ input } onUpdate={ updateText } />
             </ContainerStyled>
 
             <ContainerStyled>
-                <Dropdown label='Target' default='Spanish' languages={ languages }  onUpdate={ updateTarget } />
-                <Textbox onUpdate={ null } />
+                <Dropdown label='Target' text={ target } languages={ languages }  onUpdate={ updateTarget } />
+                <Textbox text={ translation } onUpdate={ null } />
             </ContainerStyled>
         </AppStyled>
     );

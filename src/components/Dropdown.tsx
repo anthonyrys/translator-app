@@ -1,25 +1,21 @@
-import { useState } from 'react';
 import { TextField, AutocompleteRenderInputParams } from '@mui/material';
 
 import { DropdownStyled } from '../styles/DropdownStyles';
 
 interface DropdownProps {
     label: string;
-    default: string;
+    text: string | null;
 
     languages: {[language: string]: string};
     onUpdate: {(newValue: string | null): void};
 }
 
 export default function Dropdown(props: DropdownProps): React.ReactElement {
-    const [name, setName] = useState<string | null>(props.default);
     const names: string[] = Object.keys(props.languages);
     
     function onChange(_event: React.SyntheticEvent, value: string | null): void {
-        setName(value);
-
         if (value != null) {
-            props.onUpdate(props.languages[value]); 
+            props.onUpdate(value); 
         } else {
             props.onUpdate(null); 
         }
@@ -31,7 +27,7 @@ export default function Dropdown(props: DropdownProps): React.ReactElement {
 
     return (
         <DropdownStyled
-            value={ name }
+            value={ props.text }
             onChange={ onChange }
             options={ names }
             renderInput={ renderInput } 
